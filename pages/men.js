@@ -6,11 +6,11 @@ import styles from '../styles/style_page.module.css'
 import Sort from '../component/containers/sort'
 import Button from 'react-bootstrap/Button'
 import { ToastProvider, useToasts } from 'react-toast-notifications';
-import Modal from 'react-bootstrap/Modal'
 import { ProductContext } from '../component/contexts/ProductContext'
 import { SelectContext } from './../component/contexts/SelectContext'
 import { SearchContext } from './../component/contexts/SearchContext'
 import { ViewContext } from './../component/contexts/ViewContext'
+import Modal from 'react-bootstrap/Modal'
 import React, { useState, useEffect, useContext } from 'react';
 export async function getStaticProps() {
     const user = await fetch('http://localhost:8000/api/users')
@@ -126,7 +126,7 @@ export default function Men({ userdata, productdata, menshirtsdata, menpantsdata
                         {!issearch && sort === "d" && select === 'men_shirt' && menshirtsdata.filter(item => item.name.toLowerCase().includes(search)).map((product, index) => {
                             return (
                                 <div className={styles.img}>
-                                    <Image key={index} onclick={() => addcart(product)} onclickview={() => { addview(product), setShow(true) }} src={product.img_url} title={product.name} price={product.price} />
+                                    <Image key={index} onclick={() => addcart(product)} onclickview={() => { addview(product), setShow(true),console.log(product,"and",view) }} src={product.img_url} title={product.name} price={product.price} />
                                 </div>
 
                             );

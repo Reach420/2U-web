@@ -6,6 +6,8 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import Image from './../component/presentations/imageCart'
 import { ProductContext } from './../component/contexts/ProductContext'
+import { ViewContext } from './../component/contexts/ViewContext'
+import Modal from 'react-bootstrap/Modal'
 export async function getStaticProps() {
   const product = await fetch('http://localhost:8000/api/products')
   const men_shirts = await fetch('http://localhost:8000/api/products/men_shirts')
@@ -20,11 +22,29 @@ export async function getStaticProps() {
   const skincaredata = await skincare.json()
   const productdata = await product.json()
   return {
-    
-    props: {productdata, menshirtsdata, womendata, boydata, girldata, skincaredata},
+
+    props: { productdata, menshirtsdata, womendata, boydata, girldata, skincaredata },
   }
 }
-export default function Home({productdata, menshirtsdata, womendata, boydata, girldata, skincaredata}) {
+export default function Home({ productdata, menshirtsdata, womendata, boydata, girldata, skincaredata }) {
+  const [show, setShow] = React.useState(false);
+  const { view, setView } = React.useContext(ViewContext);
+  const handleClose = () => {
+    setShow(false);
+    setView([]);
+  }
+  const addview = (views) => {
+    setView(view.concat(views));
+    console.log(view)
+  }
+  const addcart = (carts) => {
+    setcart(cart.concat(carts));
+    console.log(cart.toString());
+    addToast("Your order has been added to cart!", {
+        appearance: 'success',
+        autoDismiss: true,
+      })
+  }
   const responsive = {
     superLargeDesktop: {
       // the naming can be any, depends on you.
@@ -48,12 +68,9 @@ export default function Home({productdata, menshirtsdata, womendata, boydata, gi
   useEffect(() => {
     document.title = `Home Page`;
   });
-  const addcart = (carts) => {
-    setcart(cart.concat(carts));
-    console.log(cart);
-  }
   return (
     <div>
+      
       <div className={styles.slider}>
         <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
           <ol className="carousel-indicators">
@@ -102,16 +119,44 @@ export default function Home({productdata, menshirtsdata, womendata, boydata, gi
             <Carousel responsive={responsive}>
               {menshirtsdata.map((product, index) => {
                 return (
-                  <div><Image key={index} onclick={() => addcart(product)} src={product.img_url} title={product.name} price={product.price} /></div>
+                  <div><Image key={index} onclick={() => addcart(product)} onclickview={() => { addview(product), setShow(true), console.log(product, "and", view) }} src={product.img_url} title={product.name} price={product.price} /></div>
                 );
               }
               )}
             </Carousel>
             <div className={styles.btn}>
-              <Button onclick="/men" label='VIEW ALL'/>
+              <Button onclick="/men" label='VIEW ALL' />
             </div>
           </div>
         </div>
+        {view.map((views, index) => {
+        return (
+          <Modal
+            show={show}
+            onHide={handleClose}
+            backdrop="static"
+            keyboard={false}
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+          >
+            <Modal.Header closeButton>
+              <Modal.Title id="contained-modal-title-vcenter">{views.name}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>Price: {views.price}$</p>
+              <p>Description: {views.description}</p>
+              <p>Instock: {views.instock}</p>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={() => addcart(views)}>Add to Cart!</Button>
+            </Modal.Footer>
+          </Modal>
+        );
+      })
+      }
         <h2>WOMEN</h2>
         <div className={styles.men}>
           <div className={styles.group}>
@@ -122,13 +167,13 @@ export default function Home({productdata, menshirtsdata, womendata, boydata, gi
             <Carousel responsive={responsive}>
               {womendata.map((product, index) => {
                 return (
-                  <div><Image key={index} onclick={() => addcart(product)} src={product.img_url} title={product.name} price={product.price} /></div>
+                  <div><Image key={index} onclick={() => addcart(product)} onclickview={() => { addview(product), setShow(true),console.log(product,"and",view) }} src={product.img_url} title={product.name} price={product.price} /></div>
                 );
               }
               )}
             </Carousel>
             <div className={styles.btn}>
-              <Button onclick="/women" label='VIEW ALL'/>
+              <Button onclick="/women" label='VIEW ALL' />
             </div>
           </div>
         </div>
@@ -149,7 +194,7 @@ export default function Home({productdata, menshirtsdata, womendata, boydata, gi
             </Carousel>
           </div>
           <div className={styles.btn}>
-              <Button onclick="/boy" label='VIEW ALL'/>
+            <Button onclick="/boy" label='VIEW ALL' />
           </div>
         </div>
         <h2>GIRL</h2>
@@ -169,7 +214,7 @@ export default function Home({productdata, menshirtsdata, womendata, boydata, gi
             </Carousel>
           </div>
           <div className={styles.btn}>
-              <Button onclick="/girl" label='VIEW ALL'/>
+            <Button onclick="/girl" label='VIEW ALL' />
           </div>
         </div>
         <h2>SKIN CARE</h2>
@@ -189,7 +234,7 @@ export default function Home({productdata, menshirtsdata, womendata, boydata, gi
             </Carousel>
           </div>
           <div className={styles.btn}>
-              <Button onclick="/skincare" label='VIEW ALL'/>
+            <Button onclick="/skincare" label='VIEW ALL' />
           </div>
         </div>
 

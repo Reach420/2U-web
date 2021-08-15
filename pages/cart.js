@@ -19,22 +19,12 @@ const shop = () => {
     console.log(cart.length);
   }
   const Order = () => {
-    fetch('http://localhost:8000/api/orders/', {
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        "products": cart,
-        "gender":user.gender,
-        "name":user.name,
-        "email":user.email,
-        "phone_number":user.phone_number
+      setcart([]);
+      addToast("Thank you for your order!", {
+        appearance: 'success',
+        autoDismiss: true,
       })
-    })
-      .then(response => response.json())
-      .then(data =>{ console.log(data),console.log("after",cart)})
-      .catch((err) => {
-        console.error(err)
-      })
+
   }
   let Total = 0
   for (let i = 0; i < cart.length; i++) {
