@@ -46,14 +46,14 @@ export default function Men({ userdata, productdata, menshirtsdata, menpantsdata
         setShow(false);
         setView([]);
     }
-    const addcart = (carts) => {
-        setcart(cart.concat(carts));
-        console.log(cart.toString());
-        addToast("Your order has been added to cart!", {
-            appearance: 'success',
-            autoDismiss: true,
-          })
-    }
+        const addcart = (carts) => {
+            setcart(cart.concat(carts));
+            console.log(cart.toString());
+            addToast("Your order has been added to cart!", {
+                appearance: 'success',
+                autoDismiss: true,
+            })
+        }
     const addview = (views) => {
         setView(view.concat(views));
         console.log(view)

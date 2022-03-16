@@ -65,7 +65,8 @@ export default function UpdateProduct() {
                     console.log("hi", ProductID);
                 }
             })
-    })
+    }
+    )
 
     // React.useEffect(async () => {
     //     let unmounted = false;

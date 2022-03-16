@@ -99,8 +99,10 @@ const Product_Page = () => {
                                                        <Modal.Title id="contained-modal-title-vcenter">Are You Sure?</Modal.Title>
                                                    </Modal.Header>
                                                    <Modal.Footer>
+                                                       <Image width={100} height={100} src='/logo.png'/>
                                                        <Button variant="primary" onClick={()=>{handleDeleteProduct(DeleteProductID)}} >Yes</Button>
                                                        <Button variant="primary" onClick={()=>{setDeleteProductID (''),setdeleteshow(false)}}>No</Button>
+                                                       
                                                    </Modal.Footer>
                                                </Modal>
                                                {show === false ? (<div></div>) : (<UpdateProduct></UpdateProduct>) }
